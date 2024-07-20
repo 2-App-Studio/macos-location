@@ -14,7 +14,7 @@ using namespace node;
 @property (readonly) NSInteger errorCode;
 
 @property double maximumAge;
-@property NSUInteger timeout;
+@property long long timeout;
 @property bool enableHighAccuracy;
 
 - (void)start;

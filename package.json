@@ -1,7 +1,7 @@
 {
   "name": "macos-location",
-  "version": "1.3.1",
-  "description": "Wrapper around macOS CoreLocation services.",
+  "version": "2.0.0",
+  "description": "Wrapper around macOS CoreLocation services adapted from Jakub Synowiec <github@jakubsynowiec.info>.",
   "keywords": [
     "osx",
     "macos",
@@ -15,11 +15,11 @@
     "longitude"
   ],
   "license": "MIT",
-  "author": "Jakub Synowiec <github@jakubsynowiec.info>",
+  "author": "Two App Studio Pte. Ltd.",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "engines": {
-    "node": ">=6.9.0"
+    "node": "20"
   },
   "scripts": {
     "build": "node-gyp rebuild"
@@ -33,6 +33,6 @@
   },
   "homepage": "https://github.com/jsynowiec/macos-location",
   "dependencies": {
-    "node-gyp": "^3.6.2"
+    "node-gyp": "^10.2.0"
   }
 }

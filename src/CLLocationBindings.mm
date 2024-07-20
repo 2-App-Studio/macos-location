@@ -17,6 +17,7 @@ void getCurrentPosition(const FunctionCallbackInfo<Value>& args) {
 
   if (args.Length() == 1) {
     if (args[0]->IsObject()) {
+      // https://v8docs.nodesource.com/node-20.3/db/d85/classv8_1_1_object.html
       Local<Object> options = args[0]->ToObject(context).ToLocalChecked();
 
       Local<String> maximumAgeKey = String::NewFromUtf8(
@@ -25,7 +26,10 @@ void getCurrentPosition(const FunctionCallbackInfo<Value>& args) {
       if (options->Has(context, maximumAgeKey).FromMaybe(false)) {
         // Anything less than 100ms doesn't make any sense
         locationManager.maximumAge = fmax(
-          100, options->Get(maximumAgeKey)->NumberValue(context).ToChecked()
+          100, options->Get(
+            context, 
+            maximumAgeKey
+          ).ToLocalChecked()->NumberValue(context).ToChecked()
         );
         locationManager.maximumAge /= 1000.0;
       }
@@ -35,15 +39,19 @@ void getCurrentPosition(const FunctionCallbackInfo<Value>& args) {
       ).ToLocalChecked();
       if (options->Has(context, enableHighAccuracyKey).FromMaybe(false)) {
         locationManager.enableHighAccuracy = options->Get(
+          context,
           enableHighAccuracyKey
-        )->BooleanValue(isolate);
+        ).ToLocalChecked()->BooleanValue(isolate);
       }
 
       Local<String> timeout = String::NewFromUtf8(
         isolate, "timeout"
       ).ToLocalChecked();
       if (options->Has(context, timeout).FromMaybe(false)) {
-        locationManager.timeout = options->Get(timeout)->NumberValue(context).ToChecked();
+        locationManager.timeout = options->Get(
+          context,
+          timeout
+        ).ToLocalChecked()->IntegerValue(context).ToChecked();
       }
 
     }
@@ -98,28 +106,34 @@ void getCurrentPosition(const FunctionCallbackInfo<Value>& args) {
 
   Local<Object> obj = Object::New(isolate);
   obj->Set(
+    context,
     String::NewFromUtf8(isolate, "latitude").ToLocalChecked(),
     Number::New(isolate, location.coordinate.latitude)
   );
   obj->Set(
+    context,
     String::NewFromUtf8(isolate, "longitude").ToLocalChecked(),
     Number::New(isolate, location.coordinate.longitude)
   );
   obj->Set(
+    context,
     String::NewFromUtf8(isolate, "altitude").ToLocalChecked(),
     Number::New(isolate, location.altitude)
   );
   obj->Set(
+    context,
     String::NewFromUtf8(isolate, "horizontalAccuracy").ToLocalChecked(),
     Number::New(isolate, location.horizontalAccuracy)
   );
   obj->Set(
+    context,
     String::NewFromUtf8(isolate, "verticalAccuracy").ToLocalChecked(),
     Number::New(isolate, location.verticalAccuracy)
   );
 
   NSTimeInterval seconds = [location.timestamp timeIntervalSince1970];
   obj->Set(
+    context,
     String::NewFromUtf8(isolate, "timestamp").ToLocalChecked(),
     Number::New(isolate, (NSInteger)ceil(seconds * 1000))
   );
