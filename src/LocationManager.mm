@@ -81,7 +81,7 @@
 
   NSDate* end = (self.timeout > 0) ? [NSDate dateWithTimeIntervalSinceNow:(NSUInteger)ceil(self.timeout / 1000)] : nil;
 
-  while (!(self.timeout == 0) || [(NSDate *)NSDate.date compare:end] != NSOrderedDescending) {
+  while (self.timeout == 0 || [(NSDate *)NSDate.date compare:end] != NSOrderedDescending) {
     if (_hasLocation) {
       [self stop];
 
